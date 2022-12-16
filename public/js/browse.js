@@ -4,6 +4,35 @@ $(document).ready(function(){
 	  initialize();
 });
 
+function initialize(){
+  // $.ajax({
+  //       url: BASE_URL + CATEGORIES
+  //   }).then(function(data) {
+  //      populateCategories(data.categories);
+  //   });
+
+  //   $.ajax({
+  //       url: BASE_URL + ITEMS
+  //   }).then(function(data) {
+  //      populateItems(data.items);
+  //   });
+
+    $('#header').load("header.html", onHeaderLoaded);
+    $('#footer').load("footer.html", onHeaderLoaded);
+    $('#navigation').load("navigation.html", onHeaderLoaded);
+
+    $('.tab').click(function(){
+      $('.tab').removeClass('tab-selected');
+      $(this).addClass("tab-selected");
+      if( $(this).attr('name') == "packies"){
+        $('#category-container').fadeIn();
+        $('#items-container').fadeOut();
+      }else{
+        $('#items-container').fadeIn();
+        $('#category-container').fadeOut();
+      }
+    });
+}
 
 function onHeaderLoaded(){
   
