@@ -1,4 +1,4 @@
-var BASE_URL = "https://wackypackies.com:8002/";
+var BASE_URL = "";
 // // uncomment for local testing 
 // var BASE_URL = "http://localhost:8000/";
 var USERNAME = "username";

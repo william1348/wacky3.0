@@ -40,6 +40,85 @@ async function connectMongo(){
 				refreshItems();
 				res.render("browse", {categories: CATEGORIES, items : ITEMS})
 			});
+
+			app.get("/order", (req, res) => {
+				res.render("order", { categories: CATEGORIES})
+			});
+
+
+
+
+			// GET FULL CATEGORY OBJECT
+			app.get('/category/:id', (req, res)=>{
+				console.log('req is ' + req);
+				var category_id = parseInt(req.params.id);
+				console.log('try to find category ' + category_id);
+				db.collection("categories").findOne({"id": category_id}, function(error, categoriesResult) {
+					db.collection("items").find({}).toArray(function(error, itemsResult){
+						if(categoriesResult == null) return;
+						var categoryAddons = categoriesResult.addons;
+						var categoryIncluded = categoriesResult.included;
+						console.log('add ons ' + categoryAddons + ' included ' + categoryIncluded);
+						var finalIncludedArray = [];
+						var finalAddonsArray = [];
+						for(var i=0;i<itemsResult.length;i++){
+							console.log(' from items array. id ' + itemsResult[i].id);
+							if(categoryAddons != null && categoryAddons.includes(itemsResult[i].id)){
+								finalAddonsArray.push(itemsResult[i]);
+								console.log('adding ' + itemsResult[i].id + ' to array');
+							}else if (categoryIncluded != null && categoryIncluded.includes(itemsResult[i].id)){
+								finalIncludedArray.push(itemsResult[i]);
+							}
+						}
+						console.log('# included ' + finalIncludedArray.length + ' # add on ' + finalAddonsArray.length);
+						console.log('category: ' + categoriesResult);
+						categoriesResult.included = finalIncludedArray;
+						categoriesResult.addons = finalAddonsArray;
+						res.json({"IsSuccess" : true, "category" : categoriesResult});
+					});
+				});
+			});
+
+
+			// GET CATEGORIES
+			app.get('/categories', (req, res)=>{
+				db.collection("categories").find({}).toArray(function(error, result) {
+				    if (error) throw error;
+			    	res.json({"IsSuccess" : true, "categories" : result})	
+					console.log('categories: ' + result);
+				});
+			});
+
+
+			// GET CATEGORIES
+			app.get('/themes', (req, res)=>{
+				db.collection("themes").find({}).toArray(function(error, result) {
+				    if (error) throw error;
+			    	res.json({"IsSuccess" : true, "themes" : result})	
+				});
+			});
+
+
+			// GET TAGS
+			app.get('/tags', (req, res)=>{
+				db.collection("tags").findOne({}, function(error, result) {
+				    if (error) throw error;
+			    	res.json({"IsSuccess" : true, "tags" : result.tags})	
+					console.log('tags list' + result + "error " + error);
+				});
+			});
+
+
+			// GET ITEMS
+			app.get('/items', (req, res)=>{
+				db.collection("items").find({}).toArray(function(error, result) {
+				    if (error) throw error;
+			    	res.json({"IsSuccess" : true, "items" : result})	
+			    	console.log('items length: ' + result.length)
+				});
+			});
+
+
         }
     })()
         .catch(err => console.error(err));
