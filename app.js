@@ -26,7 +26,6 @@ MongoClient.connect(dbUrl, (err, client) => {
 		});
 	});
 
-	  
 
 	app.get("/browse", (req, res) => {
 	  res.render("browse")

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>WackyPackies</title>
+	<title>WackyPasckies</title>
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery-ui.js"></script>
@@ -16,35 +16,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap" rel="stylesheet">
 	</head>
 <body>
+<%- include('header.ejs') %>
+<%- include('navigation.ejs') %>
+<section id="main_section">
+	<div class="container">
 
-	<section id="header"></section>
-	<section id="navigation">
-	</section><!-- navigation -->
-
-	<section id="main_section">
-		<div class="container">
-
-			<div id="tab-container">
-				<div class="tab tab-selected" name="packies">PACKIES</div>
-				<div class="tab" name="products">PRODUCTS</div>
-			</div>
-
-			<div id="category-container">
-			</div>
-
-			<div id="items-container">
-			</div>
-
-			<div id="more">
-				 <button class="build-your-own-button">Build Your Own</button>
-			</div>
-
+		<div id="tab-container">
+			<div class="tab tab-selected" name="packies">PACKIES</div>
+			<div class="tab" name="products">PRODUCTS</div>
 		</div>
-	</section>
 
-	<footer id="footer">
-		footie
-	</footer>
+		<div id="category-container">
+		</div>
+
+		<div id="items-container">
+		</div>
+
+		<div id="more">
+			 <button class="build-your-own-button">Build Your Own</button>
+		</div>
+
+	</div>
+</section>
+<%- include('footer.ejs') %>
 </body>
 
 </html>
