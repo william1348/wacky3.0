@@ -4,6 +4,7 @@ const { MongoClient } = require("mongodb");
 const app = express()
 const util = require('util')
 const port = 3000
+var db;
 var CATEGORIES = [];
 var ITEMS = [];
 
@@ -14,36 +15,49 @@ MongoClient.connect(dbUrl, (err, client) => {
 	if (err) return console.log(err)
 	db = client.db('project') 
 	
+	loadCoreAsync();
+	
 	app.set("view engine", "ejs");
 	app.use(express.static(path.join(__dirname, "public")));
 
+
 	app.get("/", (req, res) => {
-
-	db.collection("categories").find({}).toArray(function(error, result) {
-	    	if (err) throw err;	
-    	CATEGORIES = result;
-		//console.log(util.inspect(result))
-			res.render("index", { categories: result})
-		});
+		res.render("index", { categories: CATEGORIES})
 	});
 
-	db.collection("items").find({}).toArray(function(error, result) {
-	    if (err) throw err;
-    	//res.json({"IsSuccess" : true, "items" : result})	
-    	//console.log('items length: ' + result.length)
-    	ITEMS = result;
-	});
+	// db.collection("categories").find({}).toArray(function(error, result) {
+	//     	if (err) throw err;	
+ //    	CATEGORIES = result;
+	// 	//console.log(util.inspect(result))
+	// 		res.render("index", { categories: result})
+	// 	});
+	// });
+
+	
 
 
 
 	app.get("/browse", (req, res) => {
-		res.render("browse", {items: CATEGORIES})
-
+		res.render("browse", {items: ITEMS})
 	});
 
 	app.listen(port, () => {
 	  console.log(`Example app listening on port ${port}`)
 	})
 
-
 });
+
+
+async function loadCoreAsync(){
+	db.collection("categories").find({}).toArray(function(error, result) {
+    	if (error) throw error;	
+    	CATEGORIES = result;
+	});
+
+	db.collection("items").find({}).toArray(function(error, result) {
+	    if (error) throw error;
+    	ITEMS = result;
+	});
+
+
+}
