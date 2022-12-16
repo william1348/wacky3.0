@@ -39,6 +39,12 @@
 	</div>
 </section>
 <%- include('footer.ejs') %>
+<script>
+	var data = <%- JSON.stringify(categories) %>
+	console.log(data);
+	populateCategories(data)
+
+</script>
 </body>
 
 </html>
