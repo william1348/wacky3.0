@@ -38,7 +38,7 @@ async function connectMongo(){
 
 			app.get("/browse", (req, res) => {
 				refreshItems();
-				res.render("browse", {categories: CATEGORIES})
+				res.render("browse", {categories: CATEGORIES, items : ITEMS})
 			});
         }
     })()

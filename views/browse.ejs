@@ -40,9 +40,11 @@
 </section>
 <%- include('footer.ejs') %>
 <script>
-	var data = <%- JSON.stringify(categories) %>
-	console.log(data);
-	populateCategories(data)
+	var categories = <%- JSON.stringify(categories) %>
+	var items = <%- JSON.stringify(items) %>
+	//console.log(items);
+	populateCategories(categories);
+	populateItems(items);
 
 </script>
 </body>
