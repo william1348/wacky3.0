@@ -45,6 +45,10 @@ async function connectMongo(){
 				res.render("order", { categories: CATEGORIES})
 			});
 
+			app.post("/payment", (req, res) => {
+				res.render("payment")
+			});
+
 
 
 
