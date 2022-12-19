@@ -349,6 +349,8 @@ html, body{
 	overflow: hidden;
 	margin-bottom:2px;
 	margin-left:10px;
+	color:	#3c2415;
+	font-weight: bold;
 }
 
 #footer-content{

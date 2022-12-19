@@ -8,6 +8,7 @@ var db;
 var client;
 var CATEGORIES = [];
 var ITEMS = [];
+var CONFIG = [];
 
 var dbUrl ="mongodb+srv://admin:ilovemillie123@project.cib5r.mongodb.net/?retryWrites=true&w=majority";
 
@@ -18,10 +19,9 @@ async function connectMongo(){
 
         db = client.db('project');
         try {
-
+    		CONFIG = await db.collection("config").find({}).toArray();
 			CATEGORIES = await db.collection("categories").find({}).toArray();
-			ITEMS = await db.collection("items").find({}).toArray();
-
+			ITEMS = await db.collection("items").find({}).toArray();		
         }
         finally {
             console.log("all loaded");
