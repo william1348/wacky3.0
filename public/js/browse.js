@@ -100,7 +100,7 @@ function populateCategories(list){
       $category.append("<h3 class='section-title browse-section-title'>" + obj.name + "</h3>");
       $currentRow.append($category);
         $category.click(function(){
-          window.location= "/order.html?category=" + $category.id;
+          window.location= "/order?category=" + $category.id;
         });
     }()); 
   }
