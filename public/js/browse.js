@@ -27,8 +27,10 @@ function initialize(){
       if( $(this).attr('name') == "packies"){
         $('#category-container').fadeIn();
         $('#items-container').fadeOut();
+        $('#items-heading').fadeOut();
       }else{
         $('#items-container').fadeIn();
+        $('#items-heading').fadeIn();
         $('#category-container').fadeOut();
       }
     });

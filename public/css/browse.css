@@ -21,6 +21,14 @@ html, body{
 	background:white;
 }
 
+#items-heading{
+	display: none;
+	width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:50px;
+	text-align: center;
+}
 
 #category-container{
 
