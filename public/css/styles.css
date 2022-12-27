@@ -403,3 +403,25 @@ html, body{
 	line-height: 38px;
 	font-size: 11px;
 }
+
+
+
+.buy-now-container{
+
+}
+
+.browse-add-cart{
+	display:inline-block;
+	border:1px #444 solid;
+	border-radius:2px;
+	padding:0 5px;
+	margin-right:5px;
+}
+
+.browse-buy-now{
+	display:inline-block;
+	border:1px #444 solid;
+	border-radius:2px;
+	padding:0 5px;
+	margin-left:5px;
+}

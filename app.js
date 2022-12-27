@@ -42,7 +42,7 @@ async function connectMongo(){
 			});
 
 			app.get("/order", (req, res) => {
-				res.render("order", { categories: CATEGORIES})
+				res.render("order", { categories: CATEGORIES, items: ITEMS})
 			});
 
 			app.post("/payment", (req, res) => {

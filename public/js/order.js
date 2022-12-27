@@ -46,12 +46,7 @@ $(document).ready(function(){
     	 populateItems();
        // populate left container details for selected category
        populateSelected();
-    });
-
-    $.ajax({
-        url: ITEMS
-    }).then(function(data){
-       populateAllItems(data.items);
+       getItems();
     });
 
     // populate all categories (left column)
@@ -73,20 +68,30 @@ $(document).ready(function(){
     });
 });
 
+
+function getItems(){ // called AFTER getting category
+  $.ajax({
+        url: ITEMS
+    }).then(function(data){
+       populateAllItems(data.items);
+    });
+}
+
 function checkMobile(){
   return (window.innerWidth < MAX_MOBILE_WIDTH);
 }
 
 function initialize(){
   isMobile = checkMobile();
-  $('#header').load("header.html", onHeaderLoaded);
-  $('#footer').load("footer.html", onHeaderLoaded);
-  $('#navigation').load("navigation.html", onHeaderLoaded);
 
   // generate order ID
   if(orderID == -1){
       orderID = generateOrderID();
   }
+
+  $('#clear-items-button').click(function(){
+    clearItemsAndReset();
+  });
 
   $('#save-button').click(function(){
       toggleCustomize(false);
@@ -97,6 +102,7 @@ function initialize(){
       }
      // return false;
   });
+
   $('#customize-edit-text').click(function(){
       toggleCustomize(true);
   });
@@ -217,6 +223,27 @@ function showPreview(input){
     reader.readAsDataURL(input.files[0]); // convert to base64 string
   }
 }
+
+
+function clearItemsAndReset(){
+  console.log('clear items and reset');
+  addOnsArray = [];
+  populateItems();
+  updatePrices();
+  toggleClearItemsButton(false);
+  populateBuildYourOwn();
+}
+
+
+function toggleClearItemsButton(show){
+  if(show){
+    $('#clear-items-button').show();
+    $('#clear-items-button').css({"display":"inline-block"});
+  }else{
+    $('#clear-items-button').hide();
+  }
+}
+
 
 function showClearImagesButton(){
   if($('#file-name-2').text() || ($('#file-name').text())){
@@ -358,6 +385,10 @@ function toggleCustomize(show){
 
 
 function populateCategories(list){
+
+  if((1==1) || currentCategory != null && currentCategory == -1){
+     return;
+  }
   categoryArray = [];
 
   for(var i=0;i<list.length;i++){
@@ -415,22 +446,80 @@ function populateAllItems(items){
     //console.log('all item: ' + obj.name);
   }
   finalAllItemsArray = allItemsArray;
+
+  // if(currentCategory != null && currentCategory.id == -1){ // BUILD YOUR OWN
+  //   populateBuildYourOwn();
+  // }
+  populateBuildYourOwn();
 }
 
+
+function populateBuildYourOwn(){
+  console.log('populate build your own');
+
+  var container = $('#big-add-item-container');
+  container.empty();
+  
+  for(var j=0;j<finalAllItemsArray.length;j++){
+    var $currentRow;
+    if(j % 2 == 0){
+      var $row = $('<div>', {class: "row"});
+      $('#big-add-item-container').append($row);
+      $currentRow = $row;
+    }
+
+    // closures
+    (function () {
+      var obj = finalAllItemsArray[j];
+      //console.log(obj);
+      var $item = $('<div>', {class: "browse-section one-half column"});
+      $item.id = obj.id;
+      $item.append("<img class='order-item-img' src='" + IMG_DIRECTORY + "box.jpeg" + "'>" );
+      $item.append("<div class='order-item-title'>" + obj.name + "</div>");
+      $item.append("<div class='order-item-description'>" + obj.description + "</div>");
+      $item.append("<div class='add-item-button'>" + "Add for $" + obj.price + "</div>");
+      $item.find('.add-item-button').click(function(){
+        $(this).text("Added!");
+        $(this).removeClass("add-item-button");
+        $(this).addClass("remove-item-button");
+          addItemToBox(obj, $(this).text());
+          toggleClearItemsButton(true);
+          $item.fadeOut(600);
+      });
+
+      $currentRow.append($item);
+    }()); 
+  } 
+}
+
+
+function addItemToBox(obj, text){
+  console.log("add item to box");
+  //console.log('add item : ' + obj.name +" button text " + text);
+  addOnsArray.push(new Item(obj.id, obj.is_addon, obj.name, obj.description, obj.count, obj.options, obj.price, obj.src));
+  //populateAddons(addOnsArray);
+  updateAddOns();
+  updatePrices();
+}
+
+function removeItemFromBox(id){
+
+}
 
 function setCurrentCategory(category){
   if(category == null) return;
   currentCategory = new Category(category.id, category.name, category.description, category.base_price, category.included, category.addons, category.src);
 }
 
+
 // left container, selected category details
 function populateSelected(){
   if(currentCategory == null){
       console.log('populateSelected::error');
       return;
-    }else{
+    } else{
      $('#detail-title').text(currentCategory.name);
-     $('#category-name').text(currentCategory.name);
+     $('#category-name').text(currentCategory.name + " Box");
      $('#included-description').text(currentCategory.description);
      populateImages();
   }
@@ -512,10 +601,23 @@ function populateThemes(themes){
   $('.theme-item').first().click();
 }
 
+
+function updateAddOns(){
+console.log('add on size ' + addOnsArray.length);
+populateAddons(addOnsArray);
+}
+
+
 function populateAddons(addonsArray){
-  addOnsArray = [];
   $('#items-container').text("");
+  addOnsArray = [];
   console.log('add on size ' + addonsArray.length);
+  if(addonsArray.length > 0){
+    $('#included-empty-text').hide();
+  }else{
+    $('#included-empty-text').html("Nothing here yet...Add items below to create the perfect gift, or use one of our <a id='curated-boxes-link' href='/browse'>curated boxes</a> to get started!");
+  $('#included-empty-text').show();
+  }
   for(var j=0;j<addonsArray.length;j++){
     // closures
     (function () {

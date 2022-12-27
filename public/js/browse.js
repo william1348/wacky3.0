@@ -96,8 +96,8 @@ function populateCategories(list){
       $category.id = obj.id;
       $category.append($('<div>', {class: "browse-section-image-container"}));
       $category.append("<img class='browse-section-image' src='img/box.png'>" );
-      $category.append("<div class='browse-section-description'>" +obj.description + "</div>");
       $category.append("<h3 class='section-title browse-section-title'>" + obj.name + "</h3>");
+            $category.append("<div class='browse-section-description'>" +obj.description + "</div>");
       $currentRow.append($category);
         $category.click(function(){
           window.location= "/order?category=" + $category.id;

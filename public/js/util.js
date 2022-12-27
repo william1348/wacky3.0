@@ -47,11 +47,11 @@ function generateOrderID(){
 }
 
 function formatPrice(input){
-    console.log('format price! ' + input);
+    console.log('format price ' + input);
     var inputString = input.toString();
     if(inputString.includes(".") && (inputString.length - inputString.indexOf(".") == 3)){
         decimal = inputString.indexOf(".");
-        console.log('nezt two ' + inputString[decimal+1] + ' ' + inputString[decimal + 2]);
+        //console.log('nezt two ' + inputString[decimal+1] + ' ' + inputString[decimal + 2]);
         // $10.00 - return $10
         if(inputString[decimal + 1] == "0" && inputString[decimal + 2] == "0"){
             return inputString.slice(0, decimal);
