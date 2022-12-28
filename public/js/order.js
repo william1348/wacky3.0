@@ -525,27 +525,54 @@ function populateSelected(){
   }
 }
 
+// function populateImages(){
+//     if(currentCategory.images == null){
+//       console.log('populateImages::error');
+//       return;
+//     }
+//     images = currentCategory.images;
+//     console.log('images : ' + images);
+//     $('#detail-img').attr('src', "img/" + images);
+//       if(images.length > 1){
+//         for(var i=0;i<images.length;i++){
+//           if(i == 0){
+//             $thumbnailContainer = $('<div>', {class: "thumbnail-container thumbnail-container-selected"});
+//           }else{
+//             $thumbnailContainer = $('<div>', {class: "thumbnail-container"});
+//           }
+//           var $thumbnailImg = $('<img>', {class: "thumbnail-img"});
+//           $thumbnailImg.attr("src", images[i]);
+//           $thumbnailContainer.append($thumbnailImg);
+//           $('#thumbnails').append($thumbnailContainer);
+//         }
+//       }
+
+//       $('.thumbnail-img').click(function(){
+//         $('.thumbnail-container').attr("class", "thumbnail-container");
+//           $('#detail-img').attr('src', $(this).attr('src'));
+//           $(this).parent().addClass("thumbnail-container-selected");
+//       });
+// }
+
+
 function populateImages(){
-    if(currentCategory.images == null){
+  if(currentCategory.images == null){
       console.log('populateImages::error');
       return;
     }
     images = currentCategory.images;
     console.log('images : ' + images);
     $('#detail-img').attr('src', "img/" + images);
-      if(images.length > 1){
-        for(var i=0;i<images.length;i++){
-          if(i == 0){
-            $thumbnailContainer = $('<div>', {class: "thumbnail-container thumbnail-container-selected"});
-          }else{
-            $thumbnailContainer = $('<div>', {class: "thumbnail-container"});
-          }
-          var $thumbnailImg = $('<img>', {class: "thumbnail-img"});
-          $thumbnailImg.attr("src", images[i]);
-          $thumbnailContainer.append($thumbnailImg);
-          $('#thumbnails').append($thumbnailContainer);
-        }
-      }
+
+        $thumbnailContainer = $('<div>', {class: "thumbnail-container thumbnail-container-selected"});
+
+        $thumbnailContainer = $('<div>', {class: "thumbnail-container"});
+      
+      var $thumbnailImg = $('<img>', {class: "thumbnail-img"});
+      $thumbnailImg.attr("src", images);
+      $thumbnailContainer.append($thumbnailImg);
+      $('#thumbnails').append($thumbnailContainer);
+      
 
       $('.thumbnail-img').click(function(){
         $('.thumbnail-container').attr("class", "thumbnail-container");
@@ -553,6 +580,7 @@ function populateImages(){
           $(this).parent().addClass("thumbnail-container-selected");
       });
 }
+
 
 
 // items for category
@@ -603,8 +631,8 @@ function populateThemes(themes){
 
 
 function updateAddOns(){
-console.log('add on size ' + addOnsArray.length);
-populateAddons(addOnsArray);
+  console.log('add on size ' + addOnsArray.length);
+  populateAddons(addOnsArray);
 }
 
 
@@ -616,7 +644,7 @@ function populateAddons(addonsArray){
     $('#included-empty-text').hide();
   }else{
     $('#included-empty-text').html("Nothing here yet...Add items below to create the perfect gift, or use one of our <a id='curated-boxes-link' href='/browse'>curated boxes</a> to get started!");
-  $('#included-empty-text').show();
+    $('#included-empty-text').show();
   }
   for(var j=0;j<addonsArray.length;j++){
     // closures
@@ -642,8 +670,17 @@ function populateAddons(addonsArray){
       });
       //console.log('total add ons: ' + totalAddOns + 'add on price: ' + obj.price);
       addOnsArray.push(new Item(obj.id, obj.is_addon, obj.name, obj.description, obj.count, obj.options, obj.price, obj.src));
+
+console.log('adding thumbnail src ' + obj.src);
+      var $thumbnailContainer = $('<div>', {class: "thumbnail-container"});
+      var $thumbnailImg = $('<img>', {class: "thumbnail-img"});
+      $thumbnailImg.attr("src", IMG_DIRECTORY + obj.src);
+      $thumbnailContainer.append($thumbnailImg);
+      $('#thumbnails').append($thumbnailContainer);
+
     }()); 
   }
+
   updatePrices();
   $('#totalAddOns').text(formatPrice(totalAddOns));
   //alert('total add on price ' + totalAddOns);
